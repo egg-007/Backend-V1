@@ -126,8 +126,6 @@ CREATE TABLE `patients` (
 --
 
 INSERT INTO `patients` (`id`, `full_name`, `email`, `gender`, `phone_number`, `date_of_birth`, `address`) VALUES
-(1, 'Amine Raji', 'amine.raji@gmail.com', 'Male', '+212610111222', '1996-03-15', 'Casablanca, Morocco'),
-(2, 'Hajar El Idrissi', 'hajar.idrissi@gmail.com', 'Female', '+212620333444', '2001-07-09', 'Rabat, Morocco'),
 (3, 'Yassine Boulahcen', 'yassine.boulahcen@gmail.com', 'Male', '+212630555666', '1994-12-21', 'Meknes, Morocco'),
 (4, 'Meriem Saidi', 'meriem.saidi@gmail.com', 'Female', '+212640777888', '1999-05-30', 'Fes, Morocco'),
 (5, 'Hamza Kabbaj', 'hamza.kabbaj@gmail.com', 'Male', '+212650999000', '1997-08-18', 'Tangier, Morocco'),
@@ -245,7 +243,27 @@ INSERT INTO `patients` (`id`, `full_name`, `email`, `gender`, `phone_number`, `d
 (117, 'Yassine Kabbaj', 'yassine.kabbaj@gmail.com', 'Male', '+212673282828', '1995-12-11', 'Oued Zem, Morocco'),
 (118, 'Ilham Meftah', 'ilham.meftah@gmail.com', 'Female', '+212683292929', '1999-07-24', 'Fquih Ben Salah, Morocco'),
 (119, 'Brahim Amghar', 'brahim.amghar@gmail.com', 'Male', '+212693303030', '1988-11-02', 'Ait Melloul, Morocco'),
-(120, 'Nada El Mansouri', 'nada.elmansouri@gmail.com', 'Female', '+212604313131', '2004-04-17', 'Smara, Morocco');
+(120, 'Nada El Mansouri', 'nada.elmansouri@gmail.com', 'Female', '+212604313131', '2004-04-17', 'Smara, Morocco'),
+(121, 'Adam El Fassi', 'adam.elfassi@gmail.com', 'Male', '0612345678', '2015-04-12', 'Casablanca'),
+(122, 'Sara Benali', 'sara.benali@gmail.com', 'Female', '0623456789', '2012-09-20', 'Rabat'),
+(123, 'Youssef Amrani', 'youssef.amrani@gmail.com', 'Male', '0634567890', '2016-01-05', 'Fes'),
+(124, 'Lina Ziani', 'lina.ziani@gmail.com', 'Female', '0645678901', '2014-07-18', 'Marrakech'),
+(125, 'Omar Chafik', 'omar.chafik@gmail.com', 'Male', '0656789012', '2013-11-02', 'Agadir'),
+(126, 'Mohamed Alaoui', 'm.alaoui@gmail.com', 'Male', '0667890123', '1955-06-10', 'Khouribga'),
+(127, 'Fatima Zahra Idrissi', 'fz.idrissi@gmail.com', 'Female', '0678901234', '1958-03-22', 'Oujda'),
+(128, 'Abdelkader Berrada', 'a.berrada@gmail.com', 'Male', '0689012345', '1949-12-01', 'Tetouan'),
+(129, 'Aicha Lahlou', 'a.lahlou@gmail.com', 'Female', '0690123456', '1952-08-14', 'Safi'),
+(130, 'Hassan Raji', 'hassan.raji@gmail.com', 'Male', '0601234567', '1950-05-30', 'El Jadida'),
+(131, 'Nour El Yousfi', 'nour.yousfi@gmail.com', 'Female', '0611122233', '2017-10-09', 'Sale'),
+(132, 'Ilyas Hariri', 'ilyas.hariri@gmail.com', 'Male', '0622233344', '2018-02-27', 'Kenitra'),
+(133, 'Maya Sbai', 'maya.sbai@gmail.com', 'Female', '0633344455', '2011-06-16', 'Tanger'),
+(134, 'Ahmed Ouazzani', 'a.ouazzani@gmail.com', 'Male', '0644455566', '1947-01-19', 'Meknes'),
+(135, 'Khadija Bennani', 'k.bennani@gmail.com', 'Female', '0655566677', '1956-09-07', 'Nador'),
+(136, 'Rayan Boutaleb', 'rayan.b@gmail.com', 'Male', '0666677788', '2019-12-03', 'Beni Mellal'),
+(137, 'Salma Kabbaj', 'salma.k@gmail.com', 'Female', '0677788899', '2013-04-25', 'Settat'),
+(138, 'Driss Lamrani', 'd.lamrani@gmail.com', 'Male', '0688899900', '1945-11-11', 'Azrou'),
+(139, 'Zohra Choukri', 'z.choukri@gmail.com', 'Female', '0699900011', '1954-02-02', 'Larache'),
+(140, 'Mustapha Skalli', 'm.skalli@gmail.com', 'Male', '0609988776', '1948-07-29', 'Taza');
 
 --
 -- Indexes for dumped tables

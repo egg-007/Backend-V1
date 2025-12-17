@@ -1,39 +1,36 @@
-    <?php
-    include "config.php";
-    $error = '';
-    $valid = '';
-    if ($_SERVER['REQUEST_METHOD'] == "POST") {
-        $fname = filter_input(INPUT_POST,'fullname',FILTER_SANITIZE_SPECIAL_CHARS);
-        $Email = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-        $date = filter_input(INPUT_POST,'date',FILTER_SANITIZE_SPECIAL_CHARS);
-        $phone = filter_input(INPUT_POST,'phone',FILTER_SANITIZE_SPECIAL_CHARS);
-        $address = filter_input(INPUT_POST,'address',FILTER_SANITIZE_SPECIAL_CHARS);
-        $specialization = filter_input(INPUT_POST,'specialization',FILTER_SANITIZE_SPECIAL_CHARS);
-        $department = filter_input(INPUT_POST,'department',FILTER_SANITIZE_SPECIAL_CHARS);
-        if(isset($_GET['id'])){
-            if($fname && $Email && $date && $phone && $address && $specialization && $department){
-                $id = $_GET['id'];
-                $query = "update patients set full_name=?, email=?, date_of_birth=?,phone_number=?,address=?,specialization=?,department=?";
-                $stm = mysqli_prepare($mysql,$query);
-                mysqli_stmt_bind_param($stm,'sssssss',$fname,$Email,$date,$phone,$address,$specialization,$department);
-                mysqli_stmt_execute($stm);
-                $valid = "done";
-            }else{
-                $error = "Invalid Input";
-            }
-        }else{
-            if($fname && $Email && $date && $phone && $address && $specialization && $department){
-                $query = "insert into patients  (full_name, email, date_of_birth,phone_number,address,specialization,department) values(?,?,?,?,?,?,?)";
-                $stm = mysqli_prepare($mysql,$query);
-                mysqli_stmt_bind_param($stm,'sssssss',$fname,$Email,$date,$phone,$address,$specialization,$department);
-                mysqli_stmt_execute($stm);
-                $valid = "done";
-            }else{
-                $error = "Invalid Input";
-            }
+<?php
+include "config.php";
+$error = '';
+$valid = '';
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    $dname = filter_input(INPUT_POST, 'department_name', FILTER_SANITIZE_SPECIAL_CHARS);
+    $location = filter_input(INPUT_POST, 'location', FILTER_SANITIZE_SPECIAL_CHARS);
+    if (isset($_GET['id'])) {
+        if ($dname && $location) {
+            $id = $_GET['id'];
+            $query = "update departments set department_name=?, location=? where id=$id";
+            $stm = mysqli_prepare($mysql, $query);
+            mysqli_stmt_bind_param($stm, 'ss', $dname, $location);
+            mysqli_stmt_execute($stm);
+            header("Refresh:0");
+            $valid = "done";
+        } else {
+            $error = "Invalid Input";
+        }
+    } else {
+        if ($dname && $location) {
+            $query = "insert into departments  (department_name, location) values(?,?)";
+            $stm = mysqli_prepare($mysql, $query);
+            mysqli_stmt_bind_param($stm, 'ss', $dname,  $location);
+            mysqli_stmt_execute($stm);
+            header("Refresh:0");
+            $valid = "done";
+        } else {
+            $error = "Invalid Input";
         }
     }
-    ?>
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,7 +62,8 @@
             </div>
 
             <nav class="space-y-2">
-                <a href="../index.php" class="flex items-center gap-3 px-4 py-2 text-gray-400 hover:bg-gray-700 rounded">
+                <a href="../index.php"
+                    class="flex items-center gap-3 px-4 py-2 text-gray-400 hover:bg-gray-700 rounded">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6">
@@ -107,7 +105,7 @@
         <main class="flex-1 p-8 overflow-auto">
             <!-- Header -->
             <div class="flex justify-end items-center gap-4 mb-8">
-                <button class="px-3 py-1 bg-gray-700 rounded text-sm">🇫🇷 English</button>
+                <button class="px-3 py-1 bg-gray-700 rounded text-sm">English</button>
                 <button class="px-3 py-1 bg-gray-700 rounded text-sm">Français</button>
             </div>
 
@@ -116,68 +114,38 @@
                     <?php
                     if (isset($_GET['id'])) {
                         $id = $_GET['id'];
-                        $query = "select * from doctors where id=$id";
+                        $query = "select * from departments where id=$id";
                         $select_where = mysqli_query($mysql, $query);
                         $data = mysqli_fetch_assoc($select_where);
-                        $fname = $data['full_name'];
-                        $Email = $data['email'];
-                        $date = $data['date_of_birth'];
-                        $phone = $data['phone_number'];
-                        $address = $data['address'];
-                        $specialization = $data['specialization'];
+                        $dname = $data['department_name'];
+                        $location = $data['location'];
+
                     }
 
                     ?>
-                    <h3 class="text-lg font-semibold mb-4 text-center">ADD PATIENTS</h3>
+                    <h3 class="text-lg font-semibold mb-4 text-center">ADD DEPARTMENTS</h3>
                     <form class="form max-w-md mx-auto space-y-4" action="" method="POST">
                         <input id="id" type="hidden" value="<?= $id ?? '' ?>">
 
                         <div>
-                            <label class="block mb-2 text-sm font-medium" for="fullname">Full Name:</label>
+                            <label class="block mb-2 text-sm font-medium" for="department_name">department Name:</label>
                             <input
                                 class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="fullname" type="text" name="fullname" value="<?= $fname ?? '' ?>">
+                                id="department_name" type="text" name="department_name" value="<?= $dname ?? '' ?>">
                         </div>
 
                         <div>
-                            <label class="block mb-2 text-sm font-medium" for="email">Email:</label>
+                            <label class="block mb-2 text-sm font-medium" for="location">location:</label>
                             <input
                                 class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="email" type="email" name="email" value="<?= $Email ?? '' ?>">
+                                id="location" type="text" name="location" value="<?= $location ?? '' ?>">
                         </div>
 
-                        <div>
-                            <label class="block mb-2 text-sm font-medium" for="date">Date of Birth:</label>
-                            <input
-                                class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="date" type="date" name="date" value="<?= $date ?? '' ?>">
-                        </div>
-
-                        <div>
-                            <label class="block mb-2 text-sm font-medium" for="Phone">Phone Number:</label>
-                            <input
-                                class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="Phone" type="text" name="Phone" value="<?= $phone ?? '' ?>">
-                        </div>
-
-                        <div>
-                            <label class="block mb-2 text-sm font-medium" for="address">Address:</label>
-                            <input
-                                class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="address" type="text" name="address" value="<?= $address ?? '' ?>">
-                        </div>
-
-                        <div>
-                            <label class="block mb-2 text-sm font-medium" for="specialization">specialization:</label>
-                            <input
-                                class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="specialization" type="text" name="specialization" value="<?= $specialization ?? '' ?>">
-                        </div>
 
                         <div class="pt-4">
                             <button type="submit"
                                 class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200">
-                                Add Patient
+                                Add department
                             </button>
                         </div>
                     </form>
@@ -187,36 +155,30 @@
             <div class="grid gap-6">
 
                 <div class="bg-gray-800 p-6 rounded-lg">
-                    <h3 class="text-lg font-semibold mb-4">PATIENTS</h3>
+                    <h3 class="text-lg font-semibold mb-4">DEPARTMENTS</h3>
                     <table class="w-full text-left border-collapse ">
                         <thead>
                             <tr class="border-b border-gray-700">
-                                <th class="text-gray-400">User ID</th>
-                                <th class="text-gray-400">full name</th>
-                                <th class="text-gray-400">email</th>
-                                <th class="text-gray-400">phone_number</th>
-                                <th class="text-gray-400">specialization</th>
-                                <th class="text-gray-400">address</th>
+                                <th class="text-gray-400">department ID</th>
+                                <th class="text-gray-400">department name</th>
+                                <th class="text-gray-400">location</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $query = "select * from doctors";
+                            $query = "select * from departments";
                             $stm = mysqli_query($mysql, $query);
                             while ($row = mysqli_fetch_assoc($stm)) {
                                 echo "
                                         <tr>
                                             <td>$row[id]</td>
-                                            <td>$row[full_name]</td>
-                                            <td>$row[email]</td>
-                                            <td>$row[phone_number]</td>
-                                            <td>$row[specialization]</td>
-                                            <td>$row[address]</td>
+                                            <td>$row[department_name]</td>
+                                            <td>$row[location]</td>
                                               <td>
-                        <a class='action-button update-button ' href='index.php?id=$row[id]'>update</a>
+                        <a class='action-button update-button ' href='departments.php?id=$row[id]'>update</a>
                     </td>
                     <td>
-                        <a class='action-button ' href='delete_doctor.php?id=$row[id]'>delete</a>
+                        <a class='action-button ' href='delete_d.php?id=$row[id]'>delete</a>
                     </td>
                                          </tr>
                                         ";
@@ -225,6 +187,7 @@
                         </tbody>
                     </table>
                 </div>
+
 
             </div>
         </main>
