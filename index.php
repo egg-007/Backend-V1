@@ -118,31 +118,31 @@
                         <script>
                             const ctx = document.getElementById('myChart');
 
-                            const Cardiology = <?php $query = "select * from doctors ";
+                            const Cardiology = <?php $query = "select * from doctors where department_id='1'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
-                            const Neurology = <?php $query = "select * from doctors ";
+                            const Neurology = <?php $query = "select * from doctors where department_id='2'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
-                            const Pediatrics = <?php $query = "select * from doctors ";
+                            const Pediatrics = <?php $query = "select * from doctors where department_id='3'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
-                            const Orthopedics = <?php $query = "select * from doctors ";
+                            const Orthopedics = <?php $query = "select * from doctors where department_id='4'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
-                            const Emergency = <?php $query = "select * from doctors ";
+                            const Emergency = <?php $query = "select * from doctors where department_id='5'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
-                            const Dermatology = <?php $query = "select * from doctors ";
+                            const Dermatology = <?php $query = "select * from doctors where department_id='6'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
-                            const Radiology = <?php $query = "select * from doctors ";
+                            const Radiology = <?php $query = "select * from doctors where department_id='7'";
                             $stm = mysqli_query($mysql, $query);
                             echo $stm->num_rows;
                             ?>;
@@ -245,14 +245,10 @@
                     </table>
                 </div>
 
-                <!-- Bonus Features -->
-
             </div>
         </main>
     </div>
-    <!-- Code injected by live-server -->
     <script>
-        // <![CDATA[  <-- For SVG support
         if ('WebSocket' in window) {
             (function () {
                 function refreshCSS() {
@@ -286,7 +282,6 @@
         else {
             console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
         }
-        // ]]>
     </script>
 
 </body>
