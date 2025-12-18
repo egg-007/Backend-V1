@@ -5,28 +5,30 @@
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $fname = filter_input(INPUT_POST,'fullname',FILTER_SANITIZE_SPECIAL_CHARS);
         $Email = filter_input(INPUT_POST,'email',FILTER_SANITIZE_EMAIL);
-        $date = filter_input(INPUT_POST,'date',FILTER_SANITIZE_SPECIAL_CHARS);
         $phone = filter_input(INPUT_POST,'phone',FILTER_SANITIZE_SPECIAL_CHARS);
         $address = filter_input(INPUT_POST,'address',FILTER_SANITIZE_SPECIAL_CHARS);
         $specialization = filter_input(INPUT_POST,'specialization',FILTER_SANITIZE_SPECIAL_CHARS);
-        $department = filter_input(INPUT_POST,'department',FILTER_SANITIZE_SPECIAL_CHARS);
+        $department_id = filter_input(INPUT_POST,'department_id',FILTER_SANITIZE_NUMBER_INT);
         if(isset($_GET['id'])){
-            if($fname && $Email && $date && $phone && $address && $specialization && $department){
+            if($fname && $Email && $phone && $address && $specialization && $department_id){
                 $id = $_GET['id'];
-                $query = "update patients set full_name=?, email=?, date_of_birth=?,phone_number=?,address=?,specialization=?,department=?";
+                $query = "update doctors set full_name=?, email=?,phone_number=?,address=?,specialization=?,department_id=? where id=$id";
                 $stm = mysqli_prepare($mysql,$query);
-                mysqli_stmt_bind_param($stm,'sssssss',$fname,$Email,$date,$phone,$address,$specialization,$department);
+                mysqli_stmt_bind_param($stm,'sssssi',$fname,$Email,$phone,$address,$specialization,$department_id);
                 mysqli_stmt_execute($stm);
+                header("Refresh:0");
                 $valid = "done";
             }else{
                 $error = "Invalid Input";
             }
         }else{
-            if($fname && $Email && $date && $phone && $address && $specialization && $department){
-                $query = "insert into patients  (full_name, email, date_of_birth,phone_number,address,specialization,department) values(?,?,?,?,?,?,?)";
+            
+            if($fname && $Email && $phone && $address && $specialization && $department_id){
+                $query = "insert into doctors (full_name, email,phone_number,address,specialization,department_id) values(?,?,?,?,?,?)";
                 $stm = mysqli_prepare($mysql,$query);
-                mysqli_stmt_bind_param($stm,'sssssss',$fname,$Email,$date,$phone,$address,$specialization,$department);
+                mysqli_stmt_bind_param($stm,'sssssi',$fname,$Email,$phone,$address,$specialization,$department_id);
                 mysqli_stmt_execute($stm);
+                header("Refresh:0");
                 $valid = "done";
             }else{
                 $error = "Invalid Input";
@@ -107,7 +109,7 @@
         <main class="flex-1 p-8 overflow-auto">
             <!-- Header -->
             <div class="flex justify-end items-center gap-4 mb-8">
-                <button class="px-3 py-1 bg-gray-700 rounded text-sm">🇫🇷 English</button>
+                <button class="px-3 py-1 bg-gray-700 rounded text-sm">English</button>
                 <button class="px-3 py-1 bg-gray-700 rounded text-sm">Français</button>
             </div>
 
@@ -116,15 +118,18 @@
                     <?php
                     if (isset($_GET['id'])) {
                         $id = $_GET['id'];
-                        $query = "select * from doctors where id=$id";
+                        $query = " select doctors.*, departments.department_name 
+                                   from doctors
+                                   join departments on doctors.department_id = departments.id
+                                   where doctors.id=$id";
                         $select_where = mysqli_query($mysql, $query);
                         $data = mysqli_fetch_assoc($select_where);
                         $fname = $data['full_name'];
                         $Email = $data['email'];
-                        $date = $data['date_of_birth'];
                         $phone = $data['phone_number'];
                         $address = $data['address'];
                         $specialization = $data['specialization'];
+                        $department_id = $data['department_name'];
                     }
 
                     ?>
@@ -147,17 +152,10 @@
                         </div>
 
                         <div>
-                            <label class="block mb-2 text-sm font-medium" for="date">Date of Birth:</label>
+                            <label class="block mb-2 text-sm font-medium" for="phone">Phone Number:</label>
                             <input
                                 class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="date" type="date" name="date" value="<?= $date ?? '' ?>">
-                        </div>
-
-                        <div>
-                            <label class="block mb-2 text-sm font-medium" for="Phone">Phone Number:</label>
-                            <input
-                                class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                id="Phone" type="text" name="Phone" value="<?= $phone ?? '' ?>">
+                                id="phone" type="text" name="phone" value="<?= $phone ?? '' ?>">
                         </div>
 
                         <div>
@@ -166,12 +164,24 @@
                                 class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 id="address" type="text" name="address" value="<?= $address ?? '' ?>">
                         </div>
-
                         <div>
                             <label class="block mb-2 text-sm font-medium" for="specialization">specialization:</label>
                             <input
                                 class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 id="specialization" type="text" name="specialization" value="<?= $specialization ?? '' ?>">
+                        </div>
+
+                        <div>
+                            <label class="block mb-2 text-sm font-medium" for="department_id">department:</label>
+                            <select name="department_id" class="w-full rounded-lg border border-gray-700 bg-gray-700 px-4 py-2 text-white focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <?php 
+                                $query = 'select * from departments';
+                                $stm = mysqli_query($mysql,$query);
+                                while($row = mysqli_fetch_assoc($stm)){
+                                    echo"<option value='$row[id]'>$row[department_name]</option>";
+                                }
+                            ?>
+                            </select>
                         </div>
 
                         <div class="pt-4">
@@ -194,14 +204,17 @@
                                 <th class="text-gray-400">User ID</th>
                                 <th class="text-gray-400">full name</th>
                                 <th class="text-gray-400">email</th>
-                                <th class="text-gray-400">phone_number</th>
                                 <th class="text-gray-400">specialization</th>
                                 <th class="text-gray-400">address</th>
+                                <th class="text-gray-400">department</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php
-                            $query = "select * from doctors";
+                            $query = "select doctors.*, departments.department_name 
+                                      from doctors
+                                      join departments on doctors.department_id = departments.id
+                                      ORDER by id ASC";
                             $stm = mysqli_query($mysql, $query);
                             while ($row = mysqli_fetch_assoc($stm)) {
                                 echo "
@@ -209,11 +222,11 @@
                                             <td>$row[id]</td>
                                             <td>$row[full_name]</td>
                                             <td>$row[email]</td>
-                                            <td>$row[phone_number]</td>
                                             <td>$row[specialization]</td>
                                             <td>$row[address]</td>
+                                            <td>$row[department_name]</td>
                                               <td>
-                        <a class='action-button update-button ' href='index.php?id=$row[id]'>update</a>
+                        <a class='action-button update-button ' href='doctors.php?id=$row[id]'>update</a>
                     </td>
                     <td>
                         <a class='action-button ' href='delete_doctor.php?id=$row[id]'>delete</a>
