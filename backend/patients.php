@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         }
     } else {
         if ($fname && $Email && $date && $phone && $address) {
-            echo "<script>alert('hhh')</script>";
             $query = "insert into patients  (full_name, email, date_of_birth,phone_number,address) values(?,?,?,?,?)";
             $stm = mysqli_prepare($mysql, $query);
             mysqli_stmt_bind_param($stm, 'sssss', $fname, $Email, $date, $phone, $address);
