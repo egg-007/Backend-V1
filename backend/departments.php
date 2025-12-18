@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <body class="bg-gray-900 text-white font-sans" cz-shortcut-listen="true">
 
     <div class="flex h-screen">
-        <!-- Sidebar -->
         <aside class="w-64 bg-gray-800 p-6">
             <div class="flex items-center gap-3 mb-8">
                 <div class="w-10 h-10 bg-teal-500 rounded-full flex items-center justify-center">
@@ -101,9 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             </nav>
         </aside>
 
-        <!-- Main Content -->
         <main class="flex-1 p-8 overflow-auto">
-            <!-- Header -->
             <div class="flex justify-end items-center gap-4 mb-8">
                 <button class="px-3 py-1 bg-gray-700 rounded text-sm">English</button>
                 <button class="px-3 py-1 bg-gray-700 rounded text-sm">Français</button>
